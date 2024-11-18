@@ -17,7 +17,7 @@ your answers should be well explained.if a user asks other questions that does n
 
 export async function sendMessage(
   userMessage: string
-): Promise<ClientMessage[]> {
+): Promise<ClientMessage> {
   const state = getMutableAIState<typeof AIProvider>();
 
   state.update({
