@@ -33,15 +33,15 @@ export function ChatApp() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col">
+    <div className="flex min-h-[calc(100vh-7rem)] flex-col">
       <ScrollArea className="flex-1 p-4">
-        <div className="mx-auto max-w-2xl space-y-4">
+        <div className="mx-auto max-md:w-full space-y-4">
           {messages.map((message) => (
             <div key={message.id}>{message.display}</div>
           ))}
         </div>
       </ScrollArea>
-      <div className="border-t bg-background p-4">
+      <div className="border-t  p-4">
         <div className="mx-auto max-w-2xl">
           <form onSubmit={handleSubmit} className="flex space-x-2">
             <Input

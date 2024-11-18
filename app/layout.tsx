@@ -32,12 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <AIProvider>
-          <SidebarProvider defaultOpen={false} >
-           <div  className="flex flex-col w-full h-screen">
-           <NavBar />
-           {children}
-           </div>
-          </SidebarProvider>
+          <NavBar>{children}</NavBar>
         </AIProvider>
       </body>
     </html>
