@@ -18,12 +18,13 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { ScrollArea } from "./ui/scroll-area";
 
 export function NavBar({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider defaultOpen={false}>
       <div className="flex h-screen flex-col w-full">
-        <header className="flex h-14 items-center justify-between border-b bg-background px-auto">
+        <header className="flex h-14 items-center justify-between border-b bg-background px-4">
           <div className="flex items-center gap-2 ">
             <SidebarTrigger className={"z-50"}>
               <Menu className="h-5 w-5" />
@@ -63,8 +64,10 @@ export function NavBar({ children }: { children: React.ReactNode }) {
               </div>
             </SidebarContent>
           </Sidebar>
-          <SidebarInset className="flex-1">
-            <main className="h-full overflow-auto p-4">{children}</main>
+          <SidebarInset className="flex-1 ">
+            <ScrollArea className="flex justify-center items-center">
+              {children}
+            </ScrollArea>
           </SidebarInset>
         </div>
       </div>

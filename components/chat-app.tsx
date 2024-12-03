@@ -1,25 +1,26 @@
-"use client"
+"use client";
 
-import React, {RefObject, useRef, useState} from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send } from 'lucide-react'
-import { useUIState, useActions } from "ai/rsc"
-import UserMessage from "./user-message"
-import AIProvider from "./ai-provider"
+import React, { RefObject, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Send } from "lucide-react";
+import { useUIState, useActions } from "ai/rsc";
+import UserMessage from "./user-message";
+import AIProvider from "./ai-provider";
 import EmptyScreen from "@/components/empty-screen";
-
+import useScroll from "@/hooks/use-scroll";
+import { ScrollAnchor } from "./scroll-anchor";
 export function ChatApp() {
-  const [messages, setMessages] = useUIState<typeof AIProvider>()
-  const { sendMessage } = useActions()
-  const [input, setInput] = useState("")
-  const formRef=useRef<HTMLFormElement | null>(null)
+  const [messages, setMessages] = useUIState<typeof AIProvider>();
+  const { sendMessage } = useActions();
+  const [input, setInput] = useState("");
+  const formRef = useRef<HTMLFormElement | null>(null);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!input || input.trim() === "") return
-    
-    setInput("")
+    e.preventDefault();
+    if (!input || input.trim() === "") return;
+
+    setInput("");
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -27,27 +28,46 @@ export function ChatApp() {
         role: "user",
         display: <UserMessage>{input}</UserMessage>,
       },
-    ])
-    
-    const res = await sendMessage(input)
-    setMessages((prevMessages) => [...prevMessages, res])
-  }
+    ]);
 
+    const res = await sendMessage(input);
+    setMessages((prevMessages) => [...prevMessages, res]);
+  };
+  const {
+    isAtBottom,
+    scrollToBottom,
+    messagesRef,
+    visibilityRef,
+    handleScroll,
+  } = useScroll();
   return (
-    <div className="flex min-h-[calc(100vh-7rem)] flex-col">
-      <ScrollArea className="flex-1 p-4">
-        {messages.length ==0 ? <EmptyScreen input={input} formRef={formRef} setInput={setInput}/>: (
-            <div className="mx-auto max-md:w-full space-y-4">
-              {messages.map((message) => (
-                  <div key={message.id}>{message.display}</div>
-              ))}
-            </div>
+    <div className="flex overflow-hidden h-[90vh] flex-col  sm:ml-20">
+      <ScrollArea
+        className="flex-grow w-full overflow-y-auto"
+        onScrollCapture={handleScroll}
+        ref={visibilityRef}
+       
+      >
+        {messages.length == 0 ? (
+          <EmptyScreen input={input} formRef={formRef} setInput={setInput}  />
+        ) : (
+          <div className="mx-auto max-md:w-full space-y-4" ref={messagesRef}>
+            {messages.map((message) => (
+              <div key={message.id}>{message.display}</div>
+            ))}
+          </div>
         )}
-
       </ScrollArea>
-      <div className="border-t  p-4">
+      <div className="mx-auto flex justify-center items-center p-4">
+        <ScrollAnchor isAtBottom={isAtBottom} scrollToBottom={scrollToBottom} />
+      </div>
+      <div className="sticky bottom-0 left-0 w-full shadow-sm mb-10">
         <div className="mx-auto max-w-2xl">
-          <form onSubmit={handleSubmit} className="flex space-x-2" ref={formRef}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex space-x-2"
+            ref={formRef}
+          >
             <Input
               type="text"
               placeholder="Type your message..."
@@ -63,5 +83,5 @@ export function ChatApp() {
         </div>
       </div>
     </div>
-  )
+  );
 }
