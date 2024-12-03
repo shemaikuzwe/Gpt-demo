@@ -9,6 +9,7 @@ import {
 import useClipBoard from "@/lib/hooks/use-clipboard";
 
 import { Card } from "@/components/ui/card";
+import { useMDXComponents } from "./mdx";
 
 interface CodeProps {
   language: string;
@@ -17,7 +18,6 @@ interface CodeProps {
 
 export default function Code({ codes, language }: CodeProps) {
   const [isCopied, copyText] = useClipBoard();
-
 
   return (
     <Card className="relative w-full font-sans  dark:bg-zinc-950 rounded-md overflow-hidden border">

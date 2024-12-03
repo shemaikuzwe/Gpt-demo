@@ -1,11 +1,18 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { Table, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import Code from "./code";
-
+  
+type HeadingProps=React.ComponentPropsWithoutRef<"h1">;
+type ParagraphProps = React.ComponentPropsWithoutRef<'p'>;
+type ListProps = React.ComponentPropsWithoutRef<'ul'>;
+type ListItemProps = React.ComponentPropsWithoutRef<'li'>;
+type AnchorProps = React.ComponentPropsWithoutRef<'a'>;
+type BlockquoteProps = React.ComponentPropsWithoutRef<'blockquote'>;
+type em=React.ComponentPropsWithoutRef<"em">
 const component = {
   table: ({ node, className, ...props }: any) => (
     <div className="my-6">
